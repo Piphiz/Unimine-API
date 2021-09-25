@@ -22,8 +22,7 @@ class UrlEntries extends Migration
             $table
                 ->foreign('url_id')
                 ->references('id')
-                ->on('url')
-                ->onDelete('cascade');
+                ->on('urls');
         });
     }
 

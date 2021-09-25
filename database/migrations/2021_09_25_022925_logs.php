@@ -13,7 +13,7 @@ class Logs extends Migration
      */
     public function up()
     {
-        Schema::create('url_entries', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->string('ip');
             $table->string('activity');

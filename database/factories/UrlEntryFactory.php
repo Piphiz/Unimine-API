@@ -4,17 +4,17 @@ namespace Database\Factories;
 
 use App\Models\Model;
 use App\Models\Url;
-use App\Models\UrlActivity;
+use App\Models\UrlEntry;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UrlActivitiesFactory extends Factory
+class UrlEntryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = UrlActivity::class;
+    protected $model = UrlEntry::class;
 
     /**
      * Define the model's default state.
@@ -26,7 +26,6 @@ class UrlActivitiesFactory extends Factory
         return [
             'url_id' => Url::inRandomOrder()->first(),
             'ip' => $this->faker->ipv4(),
-            'type' => $this->faker->randomElement($array = array ('Copied', 'Shared')),
         ];
     }
 }

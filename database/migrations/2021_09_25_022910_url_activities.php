@@ -13,18 +13,16 @@ class UrlActivities extends Migration
      */
     public function up()
     {
-        Schema::create('urls_activities', function (Blueprint $table) {
+        Schema::create('url_activities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('url_id');
             $table->string('ip');
             $table->string('type');
             $table->timestamps();
-
             $table
                 ->foreign('url_id')
                 ->references('id')
-                ->on('url')
-                ->onDelete('cascade');
+                ->on('urls');
         });
     }
 
@@ -35,6 +33,6 @@ class UrlActivities extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('urls_activities');
+        Schema::dropIfExists('url_activities');
     }
 }
