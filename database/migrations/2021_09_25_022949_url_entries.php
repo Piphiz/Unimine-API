@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class UrlEntries extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('url_entries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->unsignedBigInteger('url_id');
+            $table->string('ip');
             $table->timestamps();
-            $table->softDeletes();
+
+            $table
+                ->foreign('url_id')
+                ->references('id')
+                ->on('url')
+                ->onDelete('cascade');
         });
     }
 
@@ -30,6 +34,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('url_entries');
     }
 }
