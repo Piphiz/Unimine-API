@@ -15,9 +15,4 @@ class UrlEntry extends Model
         'url_id',
         'ip',
     ];
-
-    public function urlId()
-    {
-        return $this->belongsTo(Url::class, 'url_id');
-    }
 }

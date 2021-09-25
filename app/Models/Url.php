@@ -15,10 +15,4 @@ class Url extends Model
         'hash',
         'user_id',
     ];
-
-    public function userId()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
 }

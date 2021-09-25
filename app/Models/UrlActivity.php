@@ -16,9 +16,4 @@ class UrlActivity extends Model
         'ip',
         'type',
     ];
-
-    public function urlId()
-    {
-        return $this->belongsTo(Url::class,'url_id');
-    }
 }
