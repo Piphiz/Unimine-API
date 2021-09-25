@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Model;
+use App\Models\Url;
+use App\Models\UrlActivity;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class UrlActivitiesFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = UrlActivity::class;
 
     /**
      * Define the model's default state.
@@ -24,9 +24,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'ADMIN',
-            'email' => 'admin@admin.com.br',
-            'password' => Hash::make('asdfasdf'), // asdfasdf
+            'url_id' => Url::inRandomOrder()->first(),
+            'ip' => $this->faker->ipv4(),
+            'type' => $this->faker->randomElement($array = array ('Copied', 'Shared')),
         ];
     }
 }
