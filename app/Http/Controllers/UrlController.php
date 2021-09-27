@@ -21,16 +21,16 @@ class UrlController extends Controller
     {
         try {
             $url = Url::findOrFail($id);
+            return response()->json(['data' => $url]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao encontrar link, id não existe'], 404);
         }
-        return response()->json(['data' => $url]);
     }
 
     public function store(UrlRequest $request, Url $url)
     {
         try {
-            $url = $request->all();
+            $url = $request->only(['link', 'user_id']);
             $newUrl = Url::where('link', '=', $url['link'])->first();
             if ($newUrl !== null) {
                 $url['hash'] = $newUrl->hash;
@@ -38,7 +38,7 @@ class UrlController extends Controller
                 $url['hash'] = Str::random(6);
                 Url::create($url);
             }
-            return response()->json(['data' => $url['hash'], 'message' => 'Encurtado com sucesso']);
+            return response()->json(['data' => $url['hash'], 'message' => 'Encurtado com sucesso'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar link']);
         }
