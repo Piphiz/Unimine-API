@@ -14,14 +14,14 @@ class UrlController extends Controller
     {
         $url = Url::all();
 
-        return response()->json(['data' => UrlResource::collection($url)]);
+        return response()->json(['data' => UrlResource::collection($url)], 200);
     }
 
     public function show($id)
     {
         try {
             $url = Url::findOrFail($id);
-            return response()->json(['data' => $url]);
+            return response()->json(['data' => $url], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao encontrar link, id não existe'], 404);
         }
@@ -40,7 +40,7 @@ class UrlController extends Controller
             }
             return response()->json(['data' => $url['hash'], 'message' => 'Encurtado com sucesso'], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao criar link']);
+            return response()->json(['message' => 'Erro ao criar link'], 400);
         }
     }
 
@@ -50,8 +50,9 @@ class UrlController extends Controller
 
             Url::findOrFail($id);
             Url::destroy($id);
+            return response()->json(['message' => 'Link deletado!'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao deletar']);
+            return response()->json(['message' => 'Erro ao deletar, id não encontrado!'], 404);
         }
     }
 }
