@@ -16,6 +16,17 @@ class UrlRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('link')) {
+            $link = $this->link;
+
+            if (strpos($link, 'http://') === false && strpos($link, 'https://') === false) {
+                $this->merge(['link' => 'http://' . $link]);
+            }
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
