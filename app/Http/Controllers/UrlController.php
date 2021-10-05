@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UrlRequest;
 use App\Http\Resources\UrlResource;
 use App\Models\Url;
+use App\Models\UrlActivity;
 use App\Services\HashValidator;
 use App\Services\UniqueUrlHashGenerator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class UrlController extends Controller
@@ -14,10 +16,11 @@ class UrlController extends Controller
     protected $url;
     protected $uniqueUrlHashGenerator;
 
-    public function __construct(Url $url, UniqueUrlHashGenerator $uniqueUrlHashGenerator)
+    public function __construct(Url $url, UniqueUrlHashGenerator $uniqueUrlHashGenerator, UrlActivity $urlActivity)
     {
         $this->url = $url;
         $this->uniqueUrlHashGenerator = $uniqueUrlHashGenerator;
+        $this->urlActivity = $urlActivity;
     }
 
     public function index()
@@ -27,10 +30,15 @@ class UrlController extends Controller
         return response()->json(['data' => UrlResource::collection($url)], 200);
     }
 
-    public function show($hash)
+    public function show(Request $request, $hash)
     {
         try {
             $url = $this->url->findByHashOrFail($hash);
+            $this->urlActivity->create([
+                'url_id' => $url['id'],
+                'ip' => $request->ip(),
+                'type' => 'Accessed'
+            ]);
             return response()->json(['data' => $url], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Não existe um registro associado ao hash informado'], 404);
