@@ -34,8 +34,10 @@ class UrlRequest extends FormRequest
      */
     public function rules()
     {
+        $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-])\/?/';
+
         return [
-            'link' => 'required|url'
+            'link' => 'required|regex:'.$regex,
         ];
     }
 }
