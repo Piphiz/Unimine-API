@@ -21,8 +21,32 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::post('auth/login', [AuthController::class, 'login']);
 Route::get('/url', [UrlController::class, 'index']);
 Route::get('/url/{hash}', [UrlController::class, 'show']);
 Route::post('/url', [UrlController::class, 'store']);
+
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+Route::group([
+    'middleware' => 'api.verify.auth',
+    'prefix' => '/auth'
+], function ($router) {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/me', [AuthController::class, 'me']);
+});
+
+Route::group([
+    'middleware' => 'api.verify.auth'
+], function ($route) {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/me', [AuthController::class, 'me']);
+
+    Route::get('/teste', function (Request $request) {
+        return response()->json([
+            'message' => 'Hello ' . $request->get('uppername')
+        ]);
+    });
+});
 
