@@ -39,13 +39,12 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    
+
     /*
     * Link validation formated return exception error
     */
     public function render($request, Throwable $e)
     {
-        // dd($e);
         if($e instanceof ValidationException){
             return response()->json(['message' => 'Erro ao criar link, campo vazio ou formato invalido!'], 422);
         }

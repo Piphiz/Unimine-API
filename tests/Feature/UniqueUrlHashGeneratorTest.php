@@ -14,7 +14,7 @@ class UniqueUrlHashGeneratorTest extends TestCase
      *
      * @test
      */
-    public function test_example()
+    public function should_verify_if_is_unique_url()
     {
         $uniqueUrlHashGenerator = new UniqueUrlHashGenerator(new Url());
         $hash = $uniqueUrlHashGenerator->generate();
