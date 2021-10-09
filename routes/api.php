@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,16 +38,13 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'api.verify.auth'
-], function ($route) {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::post('/me', [AuthController::class, 'me']);
-
-    Route::get('/teste', function (Request $request) {
-        return response()->json([
-            'message' => 'Hello ' . $request->get('uppername')
-        ]);
-    });
+    'middleware' => 'api.verify.auth',
+    'prefix' => '/backoffice'
+], function () {
+    Route::get('/user', [UserController::class, 'index']);
+    Route::post('/user/create', [UserController::class, 'store']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::patch('/user/{id}', [UserController::class, 'update']);
+    Route::delete('/user/{id}', [UserController::class, 'destroy']);
 });
 
