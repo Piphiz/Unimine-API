@@ -15,6 +15,7 @@ class UrlController extends Controller
 {
     protected $url;
     protected $uniqueUrlHashGenerator;
+    protected $urlActivity;
 
     public function __construct(Url $url, UniqueUrlHashGenerator $uniqueUrlHashGenerator, UrlActivity $urlActivity)
     {
@@ -41,7 +42,7 @@ class UrlController extends Controller
             ]);
             return response()->json(['data' => $url], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Não existe um registro associado ao hash informado'], 404);
+            return response()->json([],404);
         }
     }
 
@@ -65,7 +66,7 @@ class UrlController extends Controller
             $hash = $this->uniqueUrlHashGenerator->generate();
 
             if (!HashValidator::validate($hash)) {
-                return response()->json(['message' => 'Erro interno do servidor!'], 500);
+                return response()->json([],500);
             }
 
             $url = $this->url->create([
@@ -82,7 +83,7 @@ class UrlController extends Controller
                 ]
             ], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao criar link'], 400);
+            return response()->json( [],400);
         }
     }
 
@@ -91,9 +92,9 @@ class UrlController extends Controller
         try {
             $this->url->findOrFail($id);
             $this->url->destroy($id);
-            return response()->json(['message' => 'Link deletado!'], 200);
+            return response()->json([],200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao deletar, id não encontrado!'], 404);
+            return response()->json([],404);
         }
     }
 }
