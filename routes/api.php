@@ -46,5 +46,6 @@ Route::group([
     Route::get('/user/{id}', [UserController::class, 'show']);
     Route::patch('/user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
+    Route::delete('/url/{id}', [UrlController::class, 'destroy']);
 });
 
