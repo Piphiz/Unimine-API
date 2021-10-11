@@ -36,12 +36,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = $request->all();
+            $data = $request->only(['name', 'email', 'password']);
 
             if ($this->user->where('email', '=', $data['email'])->first() && $data['email']  !== '' ) {
                 return response()->json([],409);
             }
 
+            $data['password'] = Hash::make($data['password']);
             $this->user->create($data);
             return response()->json([],201);
         } catch (\Exception $e) {
@@ -75,12 +76,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $request->all();
+            $data = $request->only(['name', 'email', 'password']);
 
-            if ($this->user->where('email', '=', $data['email'])->first() && $data['email']  !== '' ) {
-                return response()->json([],409);
-            }
+            //if ($this->user->where('email', '=', $data['email'])->first() && $data['email']  !== '' ) {
+            //    return response()->json([],409);
+            //}
 
+            $data['password'] = Hash::make($data['password']);
             $user = $this->user->find($id);
             $user->update($data);
             return response()->json([],200);
