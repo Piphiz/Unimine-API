@@ -40,6 +40,6 @@ class Url extends Model
      */
     public function findByLink($link)
     {
-        return $this->where('link', $link)->first();
+        return $this->withTrashed()->where('link', $link)->first();
     }
 }
