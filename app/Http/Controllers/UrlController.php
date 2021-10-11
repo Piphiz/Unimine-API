@@ -53,9 +53,6 @@ class UrlController extends Controller
             $url = $this->url->findByLink($data['link']);
 
             if ($url) {
-                if(!is_null($url->deleted_at)){
-                    $url->restore();
-                }
                 return response()->json([
                     'data' => [
                         'id' => $url->id,
