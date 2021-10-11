@@ -23,6 +23,7 @@ class UrlRequest extends FormRequest
 
             if (strpos($link, 'http://') === false && strpos($link, 'https://') === false) {
                 $this->merge(['link' => 'http://' . $link]);
+                $link = 'http://' . $link;
             }
             if(substr($link, -1) !== '/') {
                 $this->merge(['link' => $link . '/']);
