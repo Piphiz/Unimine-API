@@ -102,6 +102,23 @@ class UrlTest extends TestCase
 
     }
 
+    /**
+     * @test
+     */
+    public function should_check_if_trying_to_register_twice_the_same_url_returns_status_200()
+    {
+        $data = [
+            'link' => 'https://www.youtube.com/watch?v=DlkpbzXjuPM&list=RDMMDlkpbzXjuPM&start_radio=1'
+        ];
+
+        $response = $this->json('post', 'api/url', $data);
+        $response
+            ->assertStatus(201);
+        $responseSecondary = $this->json('post', 'api/url', $data);
+        $responseSecondary
+            ->assertStatus(200);
+    }
+
     public function linksProvider(): array
     {
         return [
