@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /**
- * teste de hook
+ * teste de hook para discord
  */
 
 class UrlController extends Controller
