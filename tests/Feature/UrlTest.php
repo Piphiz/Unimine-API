@@ -119,6 +119,44 @@ class UrlTest extends TestCase
             ->assertStatus(200);
     }
 
+    /**
+     * Teste deve enviar um link sem http e a API deve retornar 201
+     * @test
+     */
+    public function should_send_a_link_without_http_and_the_API_should_return_201()
+    {
+        $data = [
+            'link' => 'www.teteu.com.br'
+        ];
+
+        $response = $this->json('post', 'api/url', $data);
+        $response
+            ->assertStatus(201);
+    }
+
+    /**
+     * Teste deve enviar um link com https a api nao modifica
+     * @test
+     */
+    public function should_send_a_link_with_https_the_api_does_not_modify()
+    {
+        $dataPrimary = [
+            'link' => 'http://www.google.com.br'
+        ];
+
+        $responsePrimary = $this->json('post', 'api/url', $dataPrimary);
+        $responsePrimary
+            ->assertStatus(201);
+
+        $dataSecondary = [
+            'link' => 'www.google.com.br'
+        ];
+
+        $responseSecondary = $this->json('post', 'api/url', $dataSecondary);
+        $responseSecondary
+            ->assertStatus(200);
+    }
+
     public function linksProvider(): array
     {
         return [
