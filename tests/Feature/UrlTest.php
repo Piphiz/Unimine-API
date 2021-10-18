@@ -4,6 +4,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UrlTest extends TestCase
@@ -157,6 +158,47 @@ class UrlTest extends TestCase
             ->assertStatus(200);
     }
 
+    /**
+     * Teste deve verificar se a hash passada é válida
+     * @test
+     */
+    public function should_verify_if_hash_is_valid() {
+        $link = 'https://www.google.com/search?q=nome+do+cachorro+de+tom+e+jerry&oq=nome+do+cachorro+de+&aqs=chrome.0.0i512l2j69i57j0i512l7.8088j0j7&sourceid=chrome&ie=UTF-8';
+        $data = [
+            'link' => $link
+        ];
+        $response = $this->json('post', '/api/url', $data);
+        $hash = $response->decodeResponseJson()['data']['hash'];
+        $response
+            ->assertStatus(201);
+        $this->json('get', '/api/url/'. $hash)->assertStatus(200);
+
+    }
+
+    /**
+     * Teste deve enviar um hash invalido e retornar 404
+     * @test
+     */
+    public function should_verify_if_hash_is_invalid() {
+        $hash = substr(Hash::make('teste'), 0, 6);
+        $this->json('get', '/api/url/'. $hash)->assertStatus(404);
+    }
+
+    /**
+     * Teste deve enviar um hash invalido e retornar 404
+     * @test
+     */
+    public function should_verify_if_hash_returned_have_six_caracters_alphanumerics_lowercase() {
+        $link = 'https://www.google.com/search?q=nome+do+cachorro+de+tom+e+jerry&oq=nome+do+cachorro+de+&aqs=chrome.0.0i512l2j69i57j0i512l7.8088j0j7&sourceid=chrome&ie=UTF-8';
+        $data = [
+            'link' => $link
+        ];
+        $response = $this->json('post', '/api/url', $data);
+        $hash = $response->decodeResponseJson()['data']['hash'];
+        $this
+            ->assertTrue((bool)preg_match("/^([0-9a-z]){6}$/", $hash));
+    }
+
     public function linksProvider(): array
     {
         return [
@@ -169,7 +211,6 @@ class UrlTest extends TestCase
 
     public function linksInvalidsProvider() {
         return [
-            ['www.br'],
             ['.com.br'],
             ['www'],
             ['.br']
